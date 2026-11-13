@@ -1,0 +1,12 @@
+# Windows download markers that appear when files are copied into WSL
+*:Zone.Identifier
+
+# Eval run output (reports and per-run results)
+plugin/evals/results/
+
+# Python
+__pycache__/
+*.pyc
+
+# Personal, per-machine Claude Code settings
+.claude/settings.local.json
