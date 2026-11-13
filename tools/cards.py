@@ -4,12 +4,14 @@
     python3 tools/cards.py check     validate every card and the index
     python3 tools/cards.py index     regenerate INDEX.md
     python3 tools/cards.py status    list cards as fresh, expiring or stale
+    python3 tools/cards.py fixture   regenerate the stale-card test plugin
 
 Needs PyYAML. Not shipped with the plugin. The rules are in docs/spec.md, section 3.
 """
 
 import argparse
 import datetime
+import re
 import sys
 from pathlib import Path
 
@@ -39,6 +41,13 @@ INSTALL_FIELDS = ["executes", "install", "undo"]
 HEADINGS = ["## Pattern", "## Claude Code recipe", "## Why skip the others", "## Evidence"]
 MAX_LINES = 80
 WARN_DAYS = 14
+
+# A copy of the plugin in which one card is long past its review date. The
+# route-stale-card eval case loads it, because an eval run can't change today's date.
+FIXTURE_DIR = REPO / "plugin" / "fixtures" / "stale-plugin"
+FIXTURE_COPIES = [".claude-plugin/plugin.json", "skills/route/SKILL.md", "skills/route/RUBRIC.md"]
+FIXTURE_STALE_CARD = "plan-large-feature"
+FIXTURE_VERIFIED = "2026-01-01"
 
 
 def split_card(text):
@@ -180,6 +189,49 @@ def collect(cards_dir, today):
     return valid, problems
 
 
+def fixture_files(plugin_dir):
+    """Return {relative path: text} for the stale-card test plugin."""
+    import yaml
+
+    plugin_dir = Path(plugin_dir)
+    files = {name: (plugin_dir / name).read_text(encoding="utf-8") for name in FIXTURE_COPIES}
+    metas = []
+    for path in sorted((plugin_dir / "skills" / "route" / "cards").glob("*.md")):
+        if path.name == INDEX_NAME:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if path.stem == FIXTURE_STALE_CARD:
+            text = re.sub(r"^verified: .*$", f"verified: {FIXTURE_VERIFIED}", text, count=1, flags=re.M)
+        files[f"skills/route/cards/{path.name}"] = text
+        metas.append(yaml.safe_load(split_card(text)[0]))
+    files[f"skills/route/cards/{INDEX_NAME}"] = render_index(metas)
+    return files
+
+
+def fixture_is_current(plugin_dir, fixture_dir):
+    fixture_dir = Path(fixture_dir)
+    expected = fixture_files(plugin_dir)
+    on_disk = {
+        str(path.relative_to(fixture_dir)): path.read_text(encoding="utf-8")
+        for path in fixture_dir.rglob("*")
+        if path.is_file()
+    }
+    return on_disk == expected
+
+
+def cmd_fixture(cards_dir, today):
+    expected = fixture_files(REPO / "plugin")
+    for path in sorted(FIXTURE_DIR.rglob("*"), reverse=True) if FIXTURE_DIR.exists() else []:
+        if path.is_file() and str(path.relative_to(FIXTURE_DIR)) not in expected:
+            path.unlink()
+    for name, text in expected.items():
+        target = FIXTURE_DIR / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(text, encoding="utf-8")
+    print(f"Wrote {len(expected)} files to {FIXTURE_DIR.relative_to(REPO)}")
+    return 0
+
+
 def cmd_check(cards_dir, today):
     valid, problems = collect(cards_dir, today)
     for name, errors in problems.items():
@@ -199,7 +251,13 @@ def cmd_check(cards_dir, today):
         if card_state != "fresh":
             print(f"WARN  {meta['id']}: {card_state}, review date {expires(meta)}")
 
-    if problems or not index_ok:
+    fixture_ok = True
+    if not problems and index_ok and Path(cards_dir).resolve() == CARDS_DIR.resolve():
+        if not fixture_is_current(REPO / "plugin", FIXTURE_DIR):
+            fixture_ok = False
+            print("ERROR stale-card fixture: out of date. Run: python3 tools/cards.py fixture")
+
+    if problems or not index_ok or not fixture_ok:
         return 1
     print(f"OK    {len(valid)} cards, index current")
     return 0
@@ -233,12 +291,12 @@ def cmd_status(cards_dir, today):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Check and index Wayfinder decision cards.")
-    parser.add_argument("command", choices=["check", "index", "status"])
+    parser.add_argument("command", choices=["check", "index", "status", "fixture"])
     parser.add_argument("--cards-dir", default=str(CARDS_DIR), help="directory holding the card files")
     parser.add_argument("--today", help="override today's date (YYYY-MM-DD), for testing")
     args = parser.parse_args(argv)
     today = datetime.date.fromisoformat(args.today) if args.today else datetime.date.today()
-    command = {"check": cmd_check, "index": cmd_index, "status": cmd_status}[args.command]
+    command = {"check": cmd_check, "index": cmd_index, "status": cmd_status, "fixture": cmd_fixture}[args.command]
     return command(args.cards_dir, today)
 
 

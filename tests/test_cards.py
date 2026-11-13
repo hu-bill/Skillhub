@@ -160,9 +160,9 @@ class IndexTests(unittest.TestCase):
 
 
 class CommandTests(unittest.TestCase):
-    def run_quiet(self, command, directory):
+    def run_quiet(self, command, directory, today=TODAY):
         with contextlib.redirect_stdout(io.StringIO()) as out:
-            code = command(directory, TODAY)
+            code = command(directory, today)
         return code, out.getvalue()
 
     def test_check_fails_until_the_index_is_written(self):
@@ -197,7 +197,8 @@ class CommandTests(unittest.TestCase):
             self.assertIn("WARN  sample-card: stale", output)
 
     def test_the_shipped_cards_pass(self):
-        code, output = self.run_quiet(cards.cmd_check, cards.CARDS_DIR)
+        # Uses the real date: a re-verified card must not read as "in the future".
+        code, output = self.run_quiet(cards.cmd_check, cards.CARDS_DIR, today=datetime.date.today())
         self.assertEqual(code, 0, output)
 
 

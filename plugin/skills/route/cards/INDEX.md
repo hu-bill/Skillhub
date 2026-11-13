@@ -2,5 +2,6 @@
 | id | kind | when | verdict | expires |
 | :- | :- | :- | :- | :- |
 | long-sessions-degrade | method | Long sessions fill up, cost more and get worse. "the context is almost full"; "Claude forgot what I said earlier"; "this session has gotten slow and expensive"; "should I use a context compression tool" | built-in | 2027-02-11 |
+| media-generation | capability | Generate images or video for a project. "generate a product video"; "make an image for the landing page"; "create a short video ad"; "I need AI-generated visuals" | pick | 2026-12-13 |
 | plan-large-feature | method | Plan a large feature before writing code. "plan this feature before we build it"; "I want a design before any code"; "should I use a planning framework or spec plugin"; "this change touches many files, how should we approach it" | built-in | 2027-02-11 |
 | reverse-engineering | capability | Understand how a shipped app, binary or package works without its source. "reverse engineer this app"; "decompile this binary"; "how does this closed-source app talk to its server"; "what changed between these two builds" | pick | 2026-12-13 |
