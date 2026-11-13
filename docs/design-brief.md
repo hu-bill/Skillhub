@@ -1,7 +1,7 @@
 # Design brief: agentic development tool recommender
 
 - Working name: Wayfinder (not final)
-- Status: idea agreed, nothing built
+- Status: idea agreed. A spec was drafted in `spec.md` on 2026-11-13 and is waiting for sign-off. Nothing is built.
 - Last updated: 2026-11-13
 - Origin: a brainstorming session in the Claude app on 2026-11-10. This file is the handoff from that session.
 
@@ -205,8 +205,22 @@ agentic-development-tool-recommender/
 | 2026-11-10 | Personal tool | Not a community project |
 | 2026-11-10 | Claude Code only first | Cards keep pattern and recipe separate so other harnesses can follow |
 | 2026-11-10 | Auto-trigger plus weekly digest, with a way to turn it off per project for a vanilla setup | Mechanism in 4.4 |
+| 2026-11-13 | Spec, sign-off, then a thin slice | v0.1 is Route, about 12 cards, the ledger, live lookup and evals. The weekly loop and Prune are specified after one to two weeks of use |
+| 2026-11-13 | First cards cover domain capability tools, context and cost, and quality gates | Scale and autonomy waits |
+| 2026-11-13 | Private GitHub repository | Commits carry no Claude co-author trailer |
+| 2026-11-13 | Quiet auto-trigger | One line, then the task continues. It stops only when the developer has to install something or change working method |
 
 Sections 2 to 6 are the working proposal from the brainstorming session. The developer accepted it as the basis for the project; details can still change in the spec.
+
+### Where the spec changes this brief
+
+`spec.md` was written after re-checking the docs on 2026-11-13. Where the two differ, the spec wins.
+
+- **4.1:** the card schema gains `id`, `kind`, `triggers`, `supersedes`, `executes`, `install` and `undo`.
+- **4.2:** live lookups start from the local catalog (`claude plugin list --available --json`). `npx skills find` is not used at runtime. The scout subagent has web and read tools only.
+- **4.4:** the "manual only" middle setting is tried first as a `Skill(wayfinder:route)` deny rule. The two-plugin split is the fallback.
+- **4.5:** stale cards are handled in two tiers. Only a stale card that recommends an install is re-checked before answering.
+- **4.7:** the plugin lives in `plugin/`, the cards live inside the Route skill, and Route's read path uses no shell. Authoring tools live outside the plugin.
 
 ## 8. Open questions
 
@@ -219,6 +233,8 @@ Sections 2 to 6 are the working proposal from the brainstorming session. The dev
 7. Whether the "manual only" middle setting from 4.4 is needed.
 8. Sources for the curator run: which feeds, how often, and how to bound the cost.
 9. Ledger format, and whether it should ever sync between machines.
+
+Status on 2026-11-13: the spec answers 2 (private), 3, 4 and 9 (no sync in v1), and drafts 5, which the evals then tune. Question 7 has a candidate answer that the first build tests. Questions 1, 6 and 8 stay open; the spec gives each a default.
 
 ### Seed list of symptoms and endeavors
 
@@ -278,6 +294,8 @@ Setup
 - Remove what is no longer used
 
 ## 9. Next step
+
+Status on 2026-11-13: `docs/spec.md` exists as a draft that covers the seven items below, with v0.1 in full and the scheduled runs as an outline. The next step is the developer's sign-off, then the walking skeleton.
 
 Write the spec in `docs/spec.md`:
 

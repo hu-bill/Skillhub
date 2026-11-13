@@ -2,6 +2,8 @@
 
 Checked on 2026-11-10 from official docs and public listings. The source code of the third-party tools was not read, so treat "how it works" details as approximate and re-check before relying on them. Items marked "unverified" were seen in a single roundup or listing only.
 
+Section 5 was added on 2026-11-13 and checked against Claude Code 2.1.322.
+
 The complete index of Claude Code docs is at https://code.claude.com/docs/llms.txt. Start there when checking whether a feature still works as described here.
 
 ## 1. Native Claude Code features to build on
@@ -62,3 +64,38 @@ After the searches on 2026-11-10, nothing turned up that does all of the followi
 1. Routes from a goal or symptom, covering working methods and tools in one answer
 2. Returns "you need nothing" or "skip X, it is built in now" as a first-class answer
 3. Keeps a dated verdict per use case and reports what changed for the individual developer
+
+## 5. Added on 2026-11-13
+
+Checked on this date against the docs and Claude Code 2.1.322.
+
+### Native features found or re-checked
+
+| Need | Native feature | Source |
+| :- | :- | :- |
+| A local, structured catalog of installable plugins | `claude plugin list --available --json` returns every plugin in the configured marketplaces, with no network call. On this machine: 4,047 entries (317 from `claude-plugins-official`, 3,730 from `anthropic-plugin-directory`), each with `pluginId`, `name`, `description`, `marketplaceName`, `installCount` and `source`. | Command output; https://code.claude.com/docs/en/plugins/cli-reference.md |
+| What is installed, with scope and state | `claude plugin list --json` lists installed plugins with `scope`, `enabled` and `installPath` | Command output |
+| In-session plugin and skill suggestions | In the desktop app's Code tab, Claude has tools that search the claude.ai plugin catalog and render an install card: `SearchPlugins`, `SuggestPluginInstall`, `ListPlugins`, `SearchSkills`, `SuggestSkills`. Results carry the publisher tier, a `reach` value (contained, remote or privileged) and the component list. They are keyword matches with no verdict. | Observed in a session on 2026-11-13. No docs page found yet. |
+| Stop Claude from invoking one skill | A `Skill(name)` deny rule in permission settings. The docs do not say whether a typed `/name` still runs under it. | https://code.claude.com/docs/en/skills.md (Restrict Claude's skill access) |
+| Edit a plugin and see the change at once | A plugin with a relative-path source, in a marketplace added from a local path, loads in place. Edits apply at the next session or `/reload-plugins`, with no version change. | https://code.claude.com/docs/en/plugins/loading.md (In-place and copied plugins) |
+| Turn off the commit trailer | `attribution.commit` set to an empty string in a settings file. A CLAUDE.md rule about attribution also takes precedence. | https://code.claude.com/docs/en/settings-reference.md |
+| Write eval cases | `claude plugin eval init` has Claude write a suite. `claude plugin eval init --bare <name>` writes one blank case. | https://code.claude.com/docs/en/plugin-evals.md |
+
+### Constraints found
+
+- Eval runs are isolated: an empty workspace, no user or project configuration, and only the plugin under test. `Bash`, `Write`, `Edit`, `WebFetch` and `WebSearch` are removed unless granted with `--allow-tools`. Granting `Bash` needs a sandbox backend, which on Linux means `bubblewrap` and `socat`. A skill's own `allowed-tools` cannot widen this. (plugin-evals.md)
+- Each eval case runs three times with the plugin and three times without it. The docs' example costs about $0.41 for one case. Reports are published to claude.ai unless `--no-publish` is passed. (plugin-evals.md)
+- A shell command injected into a skill with the `` !`command` `` syntax aborts the whole skill invocation when it fails, when its permission check does not return allow, or when the session has no shell tool. (skills.md, Inject dynamic context)
+- `${CLAUDE_PLUGIN_ROOT}` and `${CLAUDE_PLUGIN_DATA}` are substituted in skill and agent text. They are not in the environment of commands Claude runs through the Bash tool. (plugins/manifest-reference.md, Environment variables)
+- Files in a plugin's `bin/` are on the Bash tool's PATH. claude.ai and Cowork do not install a plugin that has a top-level `bin/`. (plugins/components.md, Executables)
+- A `CLAUDE.md` at a plugin root is not loaded, and `claude plugin validate` warns about it. (plugins/manifest-reference.md, Standard layout)
+- A plugin agent can set `model`, `tools`, `maxTurns` and similar fields. Its `hooks`, `mcpServers` and `permissionMode` fields are ignored. (plugins/components.md, Agents)
+- `disable-model-invocation: true` also stops a session-scoped scheduled task from firing the skill as its prompt. (skills.md, Frontmatter reference)
+- A desktop scheduled task that missed runs does one catch-up run, for the most recent miss within seven days. Its prompt is stored at `~/.claude/scheduled-tasks/<task-name>/SKILL.md`. (desktop-scheduled-tasks.md)
+- A cloud session loads the repository's `.claude/skills/` but not plugins declared in the repository's settings. Its default network allowlist includes `code.claude.com`, `github.com`, `*.modelcontextprotocol.io`, npm and PyPI. (cloud-environments.md)
+
+### Catalog coverage check
+
+The developer's two examples of domain tools are not in the 4,047-entry catalog. No entry matches REA (`rea-agents`, `rea.tools`, `morluto`) or Higgsfield. A search for "reverse engineering" returns a different community skill. Tools of this kind therefore need curated cards and sources beyond Anthropic's catalogs, such as the MCP Registry and GitHub.
+
+No plugin named `wayfinder` exists in that catalog.
