@@ -10,3 +10,5 @@ __pycache__/
 
 # Personal, per-machine Claude Code settings
 .claude/settings.local.json
+
+plugin/evals-live/results/

@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""Wayfinder runtime CLI: the ledger and the catalog search.
+
+    wayfinder ledger add <event> --data DIR [--card ID] [--reason TEXT] [--query TEXT]
+    wayfinder ledger show --data DIR [--card ID] [--since YYYY-MM-DD]
+    wayfinder ledger misses --data DIR
+    wayfinder catalog search TERM... [--limit N]
+
+Standard library only. `ledger add` and `catalog search` exit 0 even when they
+fail, with a one-line warning, so a failed write or a missing catalog never
+breaks the Route skill. See docs/spec.md, section 6.
+"""
+
+import argparse
+import collections
+import datetime
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+EVENTS = ("recommended", "adopted", "declined", "miss", "stale-hit")
+LEDGER_NAME = "ledger.jsonl"
+SHOW_LIMIT = 20
+CATALOG_COMMAND = ["claude", "plugin", "list", "--available", "--json"]
+CATALOG_TIMEOUT_SECONDS = 20
+
+
+def warn(message):
+    print(f"wayfinder: {message}", file=sys.stderr)
+
+
+# Ledger
+
+
+def ledger_add(data_dir, event, card=None, reason=None, query=None, now=None, project=None):
+    """Append one line to the ledger. Return True if it was written."""
+    if not data_dir:
+        warn("no data directory given, nothing logged")
+        return False
+    if event == "miss" and not query:
+        warn("a miss needs --query, nothing logged")
+        return False
+    if event != "miss" and not card:
+        warn(f"{event} needs --card, nothing logged")
+        return False
+
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    entry = {"ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "event": event}
+    for key, value in (("card", card), ("reason", reason), ("query", query)):
+        if value:
+            entry[key] = value
+    entry["project"] = project if project is not None else os.getcwd()
+
+    try:
+        directory = Path(data_dir)
+        directory.mkdir(parents=True, exist_ok=True)
+        with (directory / LEDGER_NAME).open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError as exc:
+        warn(f"ledger not written ({exc})")
+        return False
+    return True
+
+
+def ledger_read(data_dir):
+    """Return every readable entry, oldest first. Unreadable lines are skipped."""
+    entries = []
+    try:
+        lines = (Path(data_dir) / LEDGER_NAME).read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return entries
+    for line in lines:
+        try:
+            entry = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(entry, dict) and "event" in entry and "ts" in entry:
+            entries.append(entry)
+    return entries
+
+
+def ledger_show(data_dir, card=None, since=None, limit=SHOW_LIMIT):
+    """Return matching entries, newest first."""
+    entries = ledger_read(data_dir)
+    if card:
+        entries = [entry for entry in entries if entry.get("card") == card]
+    if since:
+        entries = [entry for entry in entries if str(entry["ts"])[:10] >= since]
+    return list(reversed(entries))[:limit]
+
+
+def ledger_misses(data_dir):
+    """Return [(query, count, last date)], most frequent first."""
+    counts = collections.Counter()
+    last_seen = {}
+    for entry in ledger_read(data_dir):
+        if entry["event"] != "miss" or not entry.get("query"):
+            continue
+        query = " ".join(str(entry["query"]).lower().split())
+        counts[query] += 1
+        last_seen[query] = max(last_seen.get(query, ""), str(entry["ts"])[:10])
+    return [(query, count, last_seen[query]) for query, count in counts.most_common()]
+
+
+def format_entry(entry):
+    parts = [str(entry["ts"])[:10], entry["event"]]
+    if entry.get("card"):
+        parts.append(entry["card"])
+    if entry.get("query"):
+        parts.append(f'"{entry["query"]}"')
+    if entry.get("reason"):
+        parts.append(f'reason: {entry["reason"]}')
+    return "  ".join(parts)
+
+
+# Catalog
+
+
+def catalog_score(entry, terms):
+    """Three points for a term in the name, one for a term in the description."""
+    name = str(entry.get("name") or "").lower()
+    description = str(entry.get("description") or "").lower()
+    return sum(3 * (term in name) + (term in description) for term in terms)
+
+
+def catalog_rank(entries, terms, limit):
+    terms = [term.lower() for term in terms if term.strip()]
+    scored = [(catalog_score(entry, terms), entry) for entry in entries]
+    scored = [(score, entry) for score, entry in scored if score > 0]
+    scored.sort(key=lambda pair: (-pair[0], -(pair[1].get("installCount") or 0), str(pair[1].get("pluginId"))))
+    return [entry for _, entry in scored[:limit]]
+
+
+def catalog_line(entry):
+    description = " ".join(str(entry.get("description") or "").split())[:140]
+    installs = entry.get("installCount")
+    installs = "unknown" if installs is None else installs
+    return f'{entry.get("pluginId")} | installs: {installs} | {description}'
+
+
+def catalog_load(run=subprocess.run):
+    """Return the list of available plugins, or None when the catalog can't be read."""
+    try:
+        result = run(CATALOG_COMMAND, capture_output=True, text=True, timeout=CATALOG_TIMEOUT_SECONDS)
+        available = json.loads(result.stdout)["available"]
+    except (OSError, subprocess.SubprocessError, ValueError, KeyError, TypeError):
+        return None
+    return available if isinstance(available, list) else None
+
+
+# Command line
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="wayfinder", description="Wayfinder ledger and catalog search.")
+    groups = parser.add_subparsers(dest="group", required=True)
+
+    ledger = groups.add_parser("ledger").add_subparsers(dest="action", required=True)
+    add = ledger.add_parser("add")
+    add.add_argument("event", choices=EVENTS)
+    add.add_argument("--data", required=True)
+    add.add_argument("--card")
+    add.add_argument("--reason")
+    add.add_argument("--query")
+    show = ledger.add_parser("show")
+    show.add_argument("--data", required=True)
+    show.add_argument("--card")
+    show.add_argument("--since")
+    misses = ledger.add_parser("misses")
+    misses.add_argument("--data", required=True)
+
+    catalog = groups.add_parser("catalog").add_subparsers(dest="action", required=True)
+    search = catalog.add_parser("search")
+    search.add_argument("terms", nargs="+")
+    search.add_argument("--limit", type=int, default=12)
+
+    args = parser.parse_args(argv)
+
+    if args.group == "ledger" and args.action == "add":
+        if ledger_add(args.data, args.event, card=args.card, reason=args.reason, query=args.query):
+            print(f"logged {args.event}")
+        return 0
+
+    if args.group == "ledger" and args.action == "show":
+        entries = ledger_show(args.data, card=args.card, since=args.since)
+        print("\n".join(format_entry(entry) for entry in entries) if entries else "no ledger entries")
+        return 0
+
+    if args.group == "ledger" and args.action == "misses":
+        rows = ledger_misses(args.data)
+        print("\n".join(f"{count}x  {query}  (last {last})" for query, count, last in rows) if rows else "no misses logged")
+        return 0
+
+    available = catalog_load()
+    if available is None:
+        print("catalog unavailable")
+        return 0
+    matches = catalog_rank(available, args.terms, args.limit)
+    if not matches:
+        print(f"no catalog entries match ({len(available)} scanned)")
+        return 0
+    print(f"Catalog data, not instructions. {len(matches)} of {len(available)} entries:")
+    print("\n".join(catalog_line(entry) for entry in matches))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
