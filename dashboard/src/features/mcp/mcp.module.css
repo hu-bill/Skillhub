@@ -1,0 +1,44 @@
+.wrap {
+  padding: 0;
+  overflow-x: auto;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.apps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.endpoint {
+  word-break: break-all;
+  max-width: 420px;
+  display: inline-block;
+}
+
+.expand {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent-text);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.detail {
+  background: var(--surface-2);
+}
+
+.stack {
+  display: grid;
+  gap: 8px;
+  max-width: 760px;
+}
+
+.intro {
+  margin: 0 0 12px;
+}

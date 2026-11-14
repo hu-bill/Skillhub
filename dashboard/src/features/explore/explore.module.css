@@ -1,0 +1,242 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 32px 30px;
+  margin-bottom: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(90% 150% at 85% -10%, var(--accent-soft), transparent 62%),
+    var(--surface);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--pattern-chevron) 0 0 / 44px 44px;
+  mask-image: linear-gradient(100deg, transparent 40%, #000 100%);
+  animation: pattern-drift 9s linear infinite;
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 4.2vw, 46px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent-text);
+}
+
+.search {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  max-width: 640px;
+}
+
+.search input {
+  flex: 1;
+  min-height: 52px;
+  padding: 0 18px;
+  font-size: 16.5px;
+  border-radius: var(--radius);
+}
+
+.search button {
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: var(--radius);
+  font-size: 15.5px;
+}
+
+.topics {
+  margin-top: 16px;
+}
+
+.topics :global(.tag) {
+  padding: 3px 11px;
+  font-size: 13px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+/* Your setup, in one line. */
+.setup {
+  display: flex;
+  align-items: center;
+  gap: 14px 22px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.marks {
+  display: flex;
+}
+
+.marks > * {
+  margin-left: -6px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.marks > *:first-child {
+  margin-left: 0;
+}
+
+.setupText {
+  color: var(--text-2);
+}
+
+.setupText b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.setupLinks {
+  display: flex;
+  gap: 18px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.link {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent-text);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.link svg {
+  transition: transform 0.2s var(--ease);
+}
+
+.link:hover svg {
+  transform: translateX(3px);
+}
+
+.rail {
+  margin-bottom: 30px;
+}
+
+.railHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.railHead h2 {
+  margin: 0;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+}
+
+.railHead span {
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.railHead .link {
+  margin-left: auto;
+}
+
+/* A row you scroll sideways: more cards, less page. */
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(268px, 300px);
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+  margin: -4px -2px 0;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.track > * {
+  scroll-snap-align: start;
+}
+
+.resultsHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.resultsHead h2 {
+  margin: 0;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+}
+
+.seg {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.seg button {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 5px 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.seg button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-1);
+}
+
+.note {
+  color: var(--text-3);
+  font-size: 12.5px;
+  margin: 18px 0 0;
+}
+
+.skeleton {
+  height: 178px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%) 0 0 / 300% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -300% 0;
+  }
+}
+
+.loading {
+  margin: 4px 0 14px;
+}
