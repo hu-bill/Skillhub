@@ -1,6 +1,6 @@
 # Agentic development tool recommender
 
-Working name: Wayfinder (not final).
+Product name: **Skillhub** (repository `hu-bill/Skillhub`). "Wayfinder" was the working name and is retired: do not use it as the product name in anything a person reads (README, docs, UI copy, PR titles). The identifier `wayfinder` is still in command names, package names, paths and environment variables; write those exactly as the code has them, and do not rename them unless asked.
 
 A developer tool built around two complementary surfaces:
 1. **Dual-harness in-session task routing (`pi-package/` for Pi and `plugin/` for Claude Code):** Points the developer to the right existing built-in features, packages/plugins, skills, MCP servers and working methods for whatever they are about to do, with a dated verdict.
@@ -23,6 +23,7 @@ v0.1 targets the **Pi harness** (`pi-package/`), updated on 2026-11-14. The earl
 - `docs/dashboard-spec.md`: architecture, snapshot contract, and parallel feature slices for the `dashboard/` vertical lane
 - `dashboard/CLAUDE.md`: strict slice-isolation and choke-point rules when working inside `dashboard/`
 - `docs/prior-art.md`: what already exists (native Pi and Claude Code features and third-party tools), with links and the date each fact was checked
+- `docs/architecture.md`, `docs/tech-stack.md`, `docs/api-reference.md`: the as-built description for readers outside the team. When code changes a route, a command, a dependency or an external call, update the matching file in the same PR
 
 ## Decisions already made
 
