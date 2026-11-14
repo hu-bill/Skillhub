@@ -1,8 +1,8 @@
 # Spec: Wayfinder v0.1
 
-- Status: signed off on 2026-11-13 with the draft defaults. Amended the same day with what the walking skeleton and the first eval runs showed (sections 5, 8, 9 and 11).
-- Last updated: 2026-11-13
-- Covers: v0.1 in full (Route, decision cards, ledger, live lookup, evals). Radar, Prune and the curator are outlined in section 10. They get their own spec after v0.1 has been in use for one to two weeks.
+- Status: signed off on 2026-11-13 for the initial walking skeleton; **updated on 2026-11-14 to target the Pi harness (`pi-package/`) as v1**, while preserving the Claude Code v0.1 implementation in `plugin/`.
+- Last updated: 2026-11-14
+- Covers: v0.1 in full (Route, decision cards, ledger, live lookup, evals). Sections 1–15 record the original 2026-11-13 spec and Claude Code slice; **section 16 specifies the active Pi v0.1 package (`pi-package/`) and its differences**. Radar, Prune and the curator are outlined in section 10 and get their own spec after one to two weeks of use.
 
 Facts about Claude Code in this file were checked on 2026-11-13 against the docs index (https://code.claude.com/docs/llms.txt) and Claude Code 2.1.322. Section 13 lists them with sources. Where this spec and `design-brief.md` differ, this spec wins; the brief lists the differences in its section 7.
 
@@ -861,3 +861,58 @@ Checked on 2026-11-13. `prior-art.md` section 5 has more detail.
 4. **Route's wording (section 5)**, in particular the quiet format and when it stops.
 5. **Names:** plugin `wayfinder`, marketplace `agentic-dev-tools`, repository `agentic-dev-tool-recommender`.
 6. **The layout (section 2)**, with the plugin in `plugin/`.
+
+---
+
+## 16. Pi v0.1 Amendment (2026-11-14, Active Target)
+
+On 2026-11-14 the project goal was updated: **build v1 for the Pi harness (`@earendil-works/pi-coding-agent`, tested on 1.5.2) first**, while keeping the Claude Code v0.1 implementation in `plugin/` intact. Where sections 1–15 name Claude Code mechanics, this section governs the Pi implementation.
+
+### 16.1 Layout alongside preserved `plugin/`
+
+```text
+.
+├── CLAUDE.md, README.md              loaded by both Pi and Claude Code
+├── dashboard/                        multi-scope Harness Dashboard vertical lane (see docs/dashboard-spec.md)
+├── .pi/skills/new-card/SKILL.md      maintainer skill for Pi (disable-model-invocation: true)
+├── .claude/, .claude-plugin/, plugin/ preserved Claude Code v0.1 slice
+├── tools/
+│   ├── cards.py                      validates, indexes and builds fixtures for Pi and Claude Code
+│   └── pi_eval.py                    measures always-on cost and runs JSON-mode Pi eval suites
+├── tests/                            unit tests for cards.py, Pi wayfinder, Pi evals, and Claude wayfinder
+└── pi-package/                       everything that ships for Pi
+    ├── package.json                  Pi package manifest ("keywords": ["pi-package"])
+    ├── extensions/index.ts           /wayfinder command, --no-wayfinder flag, deferred tools
+    ├── skills/route/
+    │   ├── SKILL.md                  auto-triggering Agent Skill (description <= 1,024 chars)
+    │   ├── RUBRIC.md                 seven-question rubric adapted for Pi
+    │   └── cards/                    INDEX.md (generated) and Pi-verified decision cards
+    ├── agents/scout.md               system prompt for isolated read-only scout subprocesses
+    ├── bin/wayfinder                 runtime CLI: ledger, npm pi-package catalog search, scout runner
+    ├── fixtures/stale-package/       generated copy with long-sessions-degrade expired, for evals
+    ├── evals/                        11 offline cases (routing, negative, stale card)
+    └── evals-live/                   live lookup case (route-no-card)
+```
+
+### 16.2 Always-on cost and runtime mechanics in Pi
+
+- **Skill loading:** Pi lists `route` in `<available_skills>` (`713/1,024` description characters, `≈222` tokens measured with `python3 tools/pi_eval.py --measure`, within the 300-token budget). When triggered, Pi reads `SKILL.md`, `cards/INDEX.md`, and `cards/<id>.md` via `read` using paths relative to `SKILL.md`.
+- **Zero-token extension surface (`pi-package/extensions/index.ts`):**
+  - Registers `/wayfinder [status|ledger|misses|route <goal>|off|on]` and `--no-wayfinder` (`0` model prompt tokens).
+  - Registers `wayfinder_ledger`, `wayfinder_catalog`, and `wayfinder_scout` with `exposure: "deferred"` (`0` tokens in active tool declarations and `codemode` inline listings; verified via Pi's `AgentSession.getActiveToolNames()`).
+- **Persistent ledger:** Defaults to `${PI_WAYFINDER_DATA:-${PI_CODING_AGENT_DIR:-~/.pi/agent}/data/wayfinder}/ledger.jsonl`.
+- **Catalog search:** Queries `https://registry.npmjs.org/-/v1/search?text=keywords:pi-package+<terms>` (13,746 `pi-package` packages on 2026-11-14), honors `PI_OFFLINE=1`, and labels output untrusted data.
+- **Isolated `scout`:** `pi-package/bin/wayfinder scout` spawns `pi --print --no-session --no-skills --no-prompt-templates --no-context-files --exclude-tools edit,write --system-prompt agents/scout.md` with `PI_WAYFINDER_SCOUT=1` so the child cannot edit files or recursively load Wayfinder.
+- **Opt-out:**
+  - Project vanilla opt-out: `.pi/settings.json` package filter (`"autoload": false, "skills": []`) or `pi config --local`.
+  - Session manual-only mode: `pi --no-wayfinder` or `/wayfinder off` (blocks model `read` calls on `route/SKILL.md` while typed `/skill:route` still expands).
+
+### 16.3 First four Pi cards (verified 2026-11-14 against Pi 1.5.2)
+
+Cards in `pi-package/skills/route/cards/` use `## Pi recipe` as their second body heading:
+
+1. **`reverse-engineering` (`pick`):** REA (`pi mcp add -l rea -- npx -y rea-agents@latest mcp`). Unlike Claude Code, Pi's default `codemode` MCP exposure keeps REA's 207 tool schemas out of every prompt (`always_on_cost: low`).
+2. **`long-sessions-degrade` (`built-in`):** `/new` (with `/name`), `/compact <focus>`, `/tree` or `/fork`, `codemode` output filtering, and `pi-subagents` as the alternative; skips proxy compressors (`billion-context`) and `direct` MCP exposure.
+3. **`plan-large-feature` (`pick`):** `@plannotator/pi-extension` (`/plannotator-plan-mode`, `Ctrl+Alt+P`, `pi --plan`), because Pi intentionally omits built-in plan mode (`README.md`). Alternative: `pi --tools read,grep,find,ls` or Pi's bundled `examples/extensions/plan-mode`. (When Plannotator is already loaded in the session, Route's step 5 gives the one-line answer without asking to install.)
+4. **`media-generation` (`pick`):** `@higgsfield/cli` + `higgsfield-ai/skills` (`~/.agents/skills/`) for video and multi-model media; adds Pi's built-in `codemode` `models.generateImages()` as the first check / alternative for still images.
+

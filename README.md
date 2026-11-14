@@ -1,103 +1,117 @@
 # Wayfinder
 
-A personal Claude Code plugin. When you start a new kind of work, it checks a small set of dated decision cards and tells you whether an existing tool, plugin, MCP server or working method fits better than the default. Most of the time the answer is one line saying nothing needs adding.
+A [Pi](https://github.com/earendil-works/pi) package and multi-scope harness dashboard:
 
-`wayfinder` is a working name. The design is in `docs/`: start with `docs/spec.md`.
+1. **In-session routing (`pi-package/`):** When you start a new kind of work, checks a small set of dated decision cards and tells you whether an existing Pi feature, package, skill, MCP server or working method fits better than the default. Most of the time the answer is one line saying nothing needs adding.
+2. **Harness Dashboard (`dashboard/`):** Gives a clean, read-only overview of all skills, MCP servers, packages/extensions, permissions/configs, always-on context cost, and Wayfinder cards/ledger across user, project, and local scopes.
 
-## Install
+`wayfinder` is a working name. The design is in `docs/`: start with `docs/spec.md` (section 16 for the Pi v0.1 target) and `docs/dashboard-spec.md` (for the dashboard lane). The earlier Claude Code plugin implementation is preserved in `plugin/`.
 
-The repository is its own one-plugin marketplace. Added from a local path, the plugin loads in place, so edits to cards are live at the next session.
+## Install (Pi)
+
+Install from a local path so Pi loads the package in place—edits to cards apply at the next session or `/reload`:
 
 ```bash
-claude plugin marketplace add /home/billh/projects/141126-hackathon
+pi install ./pi-package
 ```
+
+Or try it for a single session without changing settings:
 
 ```bash
-claude plugin install wayfinder@agentic-dev-tools
+pi -e ./pi-package
 ```
-
-Then allow Claude to start the Route skill without asking, by adding one rule to `~/.claude/settings.json`:
-
-```json
-{ "permissions": { "allow": ["Skill(wayfinder:route)"] } }
-```
-
-Without that rule, Claude Code asks for approval each time Route triggers. The skill pre-approves its own card reads and its `wayfinder` command, so nothing else needs a rule.
 
 ## What it does
 
 | Piece | What it is |
 | :- | :- |
-| `/wayfinder:route` | Triggers on its own when a new kind of task starts, or run it by hand with a goal. Answers from a card. With no card, it does a live lookup and labels the result unvetted. |
-| `wayfinder ledger show --data ~/.claude/plugins/data/wayfinder-agentic-dev-tools` | What was recommended, adopted and declined |
-| `wayfinder ledger misses --data ~/.claude/plugins/data/wayfinder-agentic-dev-tools` | Tasks no card covered, most frequent first. These are the cards to write next. |
+| `/skill:route <goal>` (and auto-trigger) | Loads automatically via `<available_skills>` when a new kind of task starts, or run `/skill:route <goal>` by hand. Answers from a card. With no card on a substantial specialized task, runs an isolated live lookup and labels the result unvetted. |
+| `/wayfinder [status\|ledger\|misses\|route <goal>\|off\|on]` | Interactive command from the Pi extension: inspect card freshness, view ledger entries or uncached misses, trigger routing, or mute/unmute auto-triggering for the current session (adds 0 tokens to model context). |
+| `pi-package/bin/wayfinder ledger show` | CLI view of what was recommended, adopted and declined (stored in `${PI_WAYFINDER_DATA:-~/.pi/agent/data/wayfinder}`). |
+| `pi-package/bin/wayfinder ledger misses` | Tasks no card covered, most frequent first. These are the cards to write next. |
+| `dashboard/` | Multi-scope Harness Dashboard (in progress; see `docs/dashboard-spec.md`): inspect skills, MCP servers, packages/extensions, configs, token cost, and card/ledger status across user, project, and local scopes. |
 
 Route never installs anything. It prints the command and you run it.
 
 ## Turn it off
 
-A whole project, completely:
-
-```bash
-claude plugin disable wayfinder@agentic-dev-tools --scope local
-```
-
-One session:
-
-```bash
-claude --settings '{"enabledPlugins":{"wayfinder@agentic-dev-tools":false}}'
-```
-
-Manual only in one project (no auto-trigger, `/wayfinder:route` still works). Put this in the project's `.claude/settings.local.json`:
+**A whole project, completely (0 tokens in context).** Run `pi config --local` to disable the package's `route` skill in that project, or add a package filter in `.pi/settings.json`:
 
 ```json
-{ "permissions": { "deny": ["Skill(wayfinder:route)"] } }
+{
+  "packages": [
+    {
+      "source": "/path/to/repo/pi-package",
+      "autoload": false,
+      "skills": []
+    }
+  ]
+}
 ```
+
+**One session (manual-only: `/skill:route` still works, auto-trigger blocked):**
+
+```bash
+pi --no-wayfinder
+```
+
+Or inside a running session:
+
+```text
+/wayfinder off
+```
+
+**One session with all skills off:** `pi -ns`.
 
 ## Working on it
 
-Cards live in `plugin/skills/route/cards/`, one Markdown file each. The schema is in `docs/spec.md`, section 3.
-
-```bash
-python3 tools/cards.py check
-```
+Pi cards live in `pi-package/skills/route/cards/` (preserved Claude Code cards live in `plugin/skills/route/cards/`). The schema is in `docs/spec.md`, section 3.
 
 ```bash
 python3 tools/cards.py index
-```
-
-```bash
 python3 tools/cards.py fixture
-```
-
-```bash
+python3 tools/cards.py check
+python3 tools/cards.py status --target all
 python3 -m unittest discover tests
 ```
 
-`check` validates every card and fails if the index or the stale-card test fixture is out of date. `index` and `fixture` regenerate them. `tools/cards.py` needs PyYAML.
+`check` validates both the Pi and Claude Code card sets, indexes, and stale-card fixtures (`--target pi` or `--target claude` checks one). `tools/cards.py` needs PyYAML.
 
-To draft a card, open this repository in Claude Code and run `/new-card <symptom or id>`.
+To draft a Pi card, open this repository in Pi and run `/skill:new-card <symptom or id>`.
 
-Try the plugin from the working tree, without installing:
+Measure always-on token cost (no model calls):
+
+```bash
+python3 tools/pi_eval.py --measure
+```
+
+Run Pi eval cases (real model calls—counts against usage):
+
+```bash
+# Single case / tuning
+python3 tools/pi_eval.py ./pi-package --runs 1 --ablation none --case route-reverse-engineering
+
+# Full offline check (with vs without package)
+python3 tools/pi_eval.py ./pi-package --runs 3 --ablation both --threshold 0.67
+
+# Live lookup case (uses network)
+python3 tools/pi_eval.py ./pi-package --eval-dir evals-live --runs 1 --ablation none
+```
+
+## Concurrent Team & Agent Workflow
+
+The repository is structured into vertical lanes (`dashboard/`, `pi-package/`, `plugin/`) and **feature slices inside `dashboard/`** so two developers can work concurrently with coding agents without merge conflicts (full rules in `CLAUDE.md` and `dashboard/CLAUDE.md`):
+
+- **Short-lived feature branches:** Branch off `main` (`spine/dashboard-shell`, `feat/dashboard-skills`, `feat/dashboard-mcp`, `card/<id>`) and merge via PR.
+- **Parallel dashboard work:** Merge shared `[spine]` scaffolding first (`dashboard/package.json`, `shared/schema.*`, `src/shell/`), then assign one slice per branch (`overview`, `skills`, `mcp`, `packages`, `configs`, `cards-ledger`). Each slice owns `dashboard/src/features/<slice>/` and `dashboard/collectors/<slice>.*` via auto-discovery—never edit `App.tsx`, global CSS, or `dashboard/package.json` on a feature branch.
+- **Scope your coding agent up front:** Tell your agent its exact slice boundary at the start of the session so it does not touch shared docs or another slice.
+
+## Preserved Claude Code plugin (`./plugin`)
+
+The earlier Claude Code v0.1 slice remains intact under `plugin/`, `.claude-plugin/marketplace.json`, and `.claude/`:
 
 ```bash
 claude --plugin-dir ./plugin
-```
-
-Measure what it adds to every session:
-
-```bash
 claude --plugin-dir ./plugin plugin details wayfinder
-```
-
-Run the eval suite. Each run is a real model call and counts against usage:
-
-```bash
 claude plugin eval ./plugin --runs 1 --ablation none --no-publish
 ```
-
-```bash
-claude plugin eval ./plugin --threshold 0.67 --no-publish --max-cost-usd 15
-```
-
-The first form is for tuning: one run per case, plugin only. The second is the full check: three runs per case, with and without the plugin. The latest full result is in `plugin/evals/BASELINE.md`.

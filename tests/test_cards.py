@@ -198,8 +198,27 @@ class CommandTests(unittest.TestCase):
 
     def test_the_shipped_cards_pass(self):
         # Uses the real date: a re-verified card must not read as "in the future".
-        code, output = self.run_quiet(cards.cmd_check, cards.CARDS_DIR, today=datetime.date.today())
+        code, output = self.run_quiet(cards.cmd_check, cards.PI_CARDS_DIR, today=datetime.date.today())
         self.assertEqual(code, 0, output)
+        code_claude, out_claude = self.run_quiet(cards.cmd_check, cards.CLAUDE_CARDS_DIR, today=datetime.date.today())
+        self.assertEqual(code_claude, 0, out_claude)
+
+    def test_pi_recipe_heading_is_accepted_and_enforced_per_target(self):
+        pi_body = BODY.replace("## Claude Code recipe", "## Pi recipe")
+        self.assertEqual(cards.validate(good_meta(), pi_body, "sample-card", 40, TODAY), [])
+        self.assertEqual(
+            cards.validate(good_meta(), BODY, "sample-card", 40, TODAY, recipe_heading=cards.PI_RECIPE_HEADING),
+            ["body: missing the heading '## Pi recipe'"],
+        )
+        self.assertEqual(
+            cards.validate(good_meta(), pi_body, "sample-card", 40, TODAY, recipe_heading=cards.CLAUDE_RECIPE_HEADING),
+            ["body: missing the heading '## Claude Code recipe'"],
+        )
+
+    def test_main_check_all_targets_passes(self):
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = cards.main(["check", "--target", "all"])
+        self.assertEqual(code, 0, out.getvalue())
 
 
 if __name__ == "__main__":

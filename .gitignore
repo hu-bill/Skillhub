@@ -40,9 +40,19 @@ Thumbs.db
 *.swo
 *:Zone.Identifier
 
-# Personal, per-machine Claude Code settings
+# Personal, per-machine harness & proxy settings
+litellm.yaml
+litellm*.yaml
+litellm*.yml
 .claude/settings.local.json
+.claude/worktrees/
+.pi/settings.json
+.pi/settings.local.json
+.pi/sessions/
+.vscode/
 
 # Eval run output (reports and per-run results)
+pi-package/evals/results/
+pi-package/evals-live/results/
 plugin/evals/results/
 plugin/evals-live/results/

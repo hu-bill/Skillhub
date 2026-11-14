@@ -2,7 +2,7 @@
 
 Checked on 2026-11-10 from official docs and public listings. The source code of the third-party tools was not read, so treat "how it works" details as approximate and re-check before relying on them. Items marked "unverified" were seen in a single roundup or listing only.
 
-Section 5 was added on 2026-11-13 and checked against Claude Code 2.1.322.
+Section 5 was added on 2026-11-13 and checked against Claude Code 2.1.322. Section 6 was added on 2026-11-14 and checked against Pi 1.5.2 (`@earendil-works/pi-coding-agent`).
 
 The complete index of Claude Code docs is at https://code.claude.com/docs/llms.txt. Start there when checking whether a feature still works as described here.
 
@@ -99,3 +99,18 @@ Checked on this date against the docs and Claude Code 2.1.322.
 The developer's two examples of domain tools are not in the 4,047-entry catalog. No entry matches REA (`rea-agents`, `rea.tools`, `morluto`) or Higgsfield. A search for "reverse engineering" returns a different community skill. Tools of this kind therefore need curated cards and sources beyond Anthropic's catalogs, such as the MCP Registry and GitHub.
 
 No plugin named `wayfinder` exists in that catalog.
+
+## 6. Added on 2026-11-14: Pi harness (`@earendil-works/pi-coding-agent` 1.5.2)
+
+Checked against the installed Pi 1.5.2 documentation and runtime on this machine.
+
+| Need | Native Pi feature | Source |
+| :- | :- | :- |
+| Package distribution | Pi Packages (`package.json` with `"keywords": ["pi-package"]` and `"pi": { "extensions", "skills", "prompts", "themes" }`). `pi install ./pi-package` loads a local directory in place without copying; `pi -e ./pi-package` loads both extensions and skills from a package for one invocation. | `docs/packages.md`, `dist/core/resource-loader.js` |
+| On-demand routing instructions | Agent Skills (`SKILL.md`). Pi places `<name>`, `<description>` (`<= 1,024` chars) and `<location>` in `<available_skills>`; the model loads `SKILL.md` with `read` and resolves relative paths against the skill directory. Manual invocation: `/skill:route <goal>`. `disable-model-invocation: true` hides maintainer skills (`new-card`) from model context. | `docs/skills.md` |
+| Zero-token extension commands and deferred tools | `pi.registerCommand("wayfinder", ...)` and `pi.registerFlag("no-wayfinder", ...)` add 0 tokens to LLM context. Tools registered with `exposure: "deferred"` are omitted from active tool declarations and `codemode` inline listings (0 always-on tokens) while remaining callable from `codemode`, `tool_search`, and explicit `--tools` runs. | `docs/extensions.md` |
+| Built-in capabilities vs intentional omissions | Pi ships `read`, `bash`, `edit`, `write`, `grep`, `find`, `ls`, plus built-in extensions `builtin:mcp` (default `codemode` exposure), `builtin:codemode` (QuickJS tool scripting + `models.classify()` + `models.generateImages()`), and `builtin:tool-search`. Pi intentionally omits built-in subagents and plan mode (`README.md`). | `README.md`, `docs/cli.md`, `docs/codemode.md`, `docs/mcp.md` |
+| Ecosystem catalog | npm packages tagged `keywords:pi-package` (`https://registry.npmjs.org/-/v1/search?text=keywords:pi-package...`, 13,746 packages on 2026-11-14), alongside the official MCP Registry and Agent Skills directories (`~/.agents/skills/`, `.agents/skills/`). | `docs/packages.md`, npm registry query |
+| Opt-out and manual-only mode | Full project opt-out via `.pi/settings.json` package resource filter (`"autoload": false, "skills": []`) or `pi config --local`. Single-session manual-only mode via `pi --no-wayfinder` or `/wayfinder off` (blocks model `read` calls on `route/SKILL.md` while explicit `/skill:route` still expands). | `docs/packages.md`, `docs/extensions.md` |
+| Isolated subagent & eval execution | `pi --print --no-session --no-skills --no-prompt-templates --no-context-files --exclude-tools edit,write --system-prompt ...` runs `scout` in a separate read-only process. `pi --mode json --no-session` emits strict LF-delimited JSONL records for local evals (`tools/pi_eval.py`). | `docs/cli.md`, `docs/json.md`, `examples/extensions/subagent/` |
+

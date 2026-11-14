@@ -1,8 +1,8 @@
 # Design brief: agentic development tool recommender
 
 - Working name: Wayfinder (not final)
-- Status: idea agreed. A spec was drafted in `spec.md` on 2026-11-13 and is waiting for sign-off. Nothing is built.
-- Last updated: 2026-11-13
+- Status: idea agreed; v0.1 target updated on 2026-11-14 to the **Pi harness** (`pi-package/`), while preserving the 2026-11-13 Claude Code walking skeleton in `plugin/`. See `spec.md` (especially section 16).
+- Last updated: 2026-11-14
 - Origin: a brainstorming session in the Claude app on 2026-11-10. This file is the handoff from that session.
 
 Facts about Claude Code and third-party tools in this file were checked on 2026-11-10. Sources are in `prior-art.md`. Claude Code changes weekly, so re-check anything the design depends on before building it.
@@ -105,6 +105,7 @@ Live lookups query structured sources before the open web: the official marketpl
 ### 4.3 Entry points
 
 - **Route.** Fires when the developer starts a new kind of work, or when they run it by name with a goal. Returns one setup: the working method, the feature or tool, what to skip, how to try it and how to undo it.
+- **Dashboard.** An out-of-band, inspect-first visual overview (`dashboard/`, specified in `docs/dashboard-spec.md`) of everything installed and configured across user, project and local scopes: skills, MCP servers, packages/plugins, instruction & settings files, always-on context cost, and Wayfinder card/ledger status.
 - **Radar.** A weekly run that compares the sources with the developer's history and reports a few lines, for example "2 relevant, 37 ignored, nothing replaces what you use." The ignored count is the part that gives closure.
 - **Prune.** Wraps the native checks (`/doctor`, `/skill-doctor`, `claude plugin details`) and adds one check of its own: a card says this tool is built in now, so remove it.
 
@@ -209,6 +210,9 @@ agentic-development-tool-recommender/
 | 2026-11-13 | First cards cover domain capability tools, context and cost, and quality gates | Scale and autonomy waits |
 | 2026-11-13 | Private GitHub repository | Commits carry no Claude co-author trailer |
 | 2026-11-13 | Quiet auto-trigger | One line, then the task continues. It stops only when the developer has to install something or change working method |
+| 2026-11-14 | **Pi harness as v1 target** | Build v1 for Pi (`pi-package/`) instead of Claude Code first; keep the Claude Code v0.1 slice intact in `plugin/` |
+| 2026-11-14 | **Multi-scope Harness Dashboard** | Add an inspect-first visual dashboard (`dashboard/`, `docs/dashboard-spec.md`) showing installed skills, MCPs, packages/plugins, configs, context cost and card/ledger status across user, project and local scopes |
+| 2026-11-14 | **Concurrent vertical-lane & feature-slice workflow** | Isolate `dashboard/` as a vertical lane and split its internals into auto-discovered feature slices (`features/<slice>/` + `collectors/<slice>`) so two developers and their agents can build features simultaneously without merge conflicts |
 
 Sections 2 to 6 are the working proposal from the brainstorming session. The developer accepted it as the basis for the project; details can still change in the spec.
 
