@@ -1,16 +1,16 @@
 ---
 name: route
 description: >-
-  Gives a dated verdict on which existing Pi feature, package, skill, MCP
-  server or working method fits a task, often "nothing to add". Load before
-  answering when the user starts, or asks how to approach: planning a large
-  feature or multi-file change; a long session that loses context or gets slow
-  and expensive; context compression or token cost; reverse engineering or
-  decompiling an app or binary without source; generating images or video;
-  another specialized domain where purpose-built tooling may exist, such as
-  packet or firmware analysis; or asks whether to install a Pi package, MCP
-  server, skill or framework. Not for small edits, quick questions, work
-  already under way, or tasks an active skill covers.
+  Gives a dated verdict on which existing Pi feature, package, skill, MCP server or working method
+  fits a task, often "nothing to add". Load before answering when the user starts, or asks how to
+  approach: planning a large feature or multi-file change; pre-merge code review, security review or
+  secret audit; a long session that loses context or gets slow and expensive; checking what uses
+  context, isolating noisy side tasks or subagents, context compression or cutting token, model or
+  thinking spend; browser or web UI testing; current library or SDK docs; distinctive frontend UI
+  design; reverse engineering or decompiling an app or binary without source; generating images or
+  video; another specialized domain where purpose-built tooling may exist, such as packet or
+  firmware analysis; or asks whether to install a Pi package, MCP server, skill or framework. Not
+  for small edits, quick questions, work already under way, or tasks an active skill covers.
 ---
 
 # Route
