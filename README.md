@@ -107,20 +107,12 @@ claude --plugin-dir ./plugin     # Claude Code
 
 ```mermaid
 flowchart LR
-  subgraph disk["Your computer"]
-    cfg["Config files of 12 AI apps<br>skills, MCP servers, usage logs"]
-  end
-  subgraph dash["Skillhub dashboard, one local process"]
-    col["Collectors<br>read only, secrets removed"]
-    api["Local API<br>127.0.0.1 only"]
-    ui["React pages<br>Explore, My skills, Map, MCP, Usage, Ask"]
-    act["actions.ts<br>the only code that writes"]
-  end
-  reg["skills.sh and the MCP Registry"]
-  cfg --> col --> api --> ui
-  reg -. search .-> api
-  ui -- "you confirm a change" --> act
-  act -- "backup first, then edit" --> cfg
+  cfg["Config files<br>of 12 AI apps"] --> col["Collectors<br>read only,<br>secrets removed"]
+  col --> api["Local API<br>127.0.0.1 only"]
+  reg["skills.sh and<br>the MCP Registry"] -. search .-> api
+  api --> ui["React pages"]
+  ui -- "you confirm" --> act["actions.ts<br>the only code<br>that writes"]
+  act -- "backup, then edit" --> out["Config files"]
 ```
 
 ```mermaid
