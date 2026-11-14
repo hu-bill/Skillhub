@@ -1,0 +1,8 @@
+{
+  "name": "agentic-dev-tools",
+  "description": "Personal marketplace for the Wayfinder plugin",
+  "owner": { "name": "Bill Hu" },
+  "plugins": [
+    { "name": "wayfinder", "source": "./plugin" }
+  ]
+}

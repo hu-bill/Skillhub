@@ -38,3 +38,11 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+*:Zone.Identifier
+
+# Personal, per-machine Claude Code settings
+.claude/settings.local.json
+
+# Eval run output (reports and per-run results)
+plugin/evals/results/
+plugin/evals-live/results/

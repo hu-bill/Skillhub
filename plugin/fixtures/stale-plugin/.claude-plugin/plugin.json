@@ -1,0 +1,6 @@
+{
+  "name": "wayfinder",
+  "displayName": "Wayfinder",
+  "description": "Points to the right existing tool, plugin or working method for the task at hand, with a dated verdict.",
+  "author": { "name": "Bill Hu" }
+}
