@@ -16,7 +16,8 @@
   <a href="#what-you-get">What you get</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#check-our-claims">Check our claims</a> ·
-  <a href="#repository-map">Repository map</a>
+  <a href="#repository-map">Repository map</a> ·
+  <a href="#documentation">Documentation</a>
 </p>
 
 <p align="center">
@@ -62,6 +63,8 @@ Open http://127.0.0.1:5177 and follow this path:
 To run it on your own setup, use `npm run dev` instead of `npm run demo`. It only reads until you ask for a change, and each change first shows the exact file it edits or the command it runs.
 
 The Ask tab and the assistant on the map use Google Gemini and stay off until you add your own key. The steps are in [`dashboard/README.md`](dashboard/README.md#the-gemini-assistant).
+
+Requirements and install steps for every part, including the router and the developer tools, are in one table under [Reference](#reference).
 
 ## What you get
 
@@ -185,7 +188,61 @@ Some things cannot be read from disk at all, and the dashboard says so instead o
 
 "Skillhub" is the product name you see in the interface. "Wayfinder" is the working name of the in-session router, and it still appears in package names and paths.
 
+## Documentation
+
+| Document | What it answers |
+| :- | :- |
+| [`docs/architecture.md`](docs/architecture.md) | How both parts are built, how a change is confirmed, the trust boundaries, how it is tested, and the trade-offs |
+| [`docs/tech-stack.md`](docs/tech-stack.md) | Every API, framework and tool used, with versions, and exactly what data goes to each external service |
+| [`docs/api-reference.md`](docs/api-reference.md) | The dashboard's local HTTP API and data contracts, the router's commands, tools and CLI, the card and ledger formats, and every setting |
+| [`dashboard/README.md`](dashboard/README.md) | Running the dashboard, what each page shows, and how changes are made |
+| [`docs/README.md`](docs/README.md) | An index of all documents, with a fifteen-minute reading path |
+
+The design records ([`spec.md`](docs/spec.md), [`dashboard-spec.md`](docs/dashboard-spec.md), [`design-brief.md`](docs/design-brief.md), [`prior-art.md`](docs/prior-art.md)) explain why each decision was made.
+
 ## Reference
+
+<details>
+<summary><b>Set up every part: requirements and install steps</b></summary>
+
+Clone the repository once. Each part is then set up on its own, and you only need the parts you want to try.
+
+```bash
+git clone https://github.com/hu-bill/Skillhub.git
+cd Skillhub
+```
+
+| Part | You need | Install | Run |
+| :- | :- | :- | :- |
+| Dashboard on demo data | Node 22.13 or newer, npm | `cd dashboard && npm install` | `npm run demo` |
+| Dashboard on your own setup | The same | The same | `npm run dev` |
+| Gemini assistant (optional) | A key from https://aistudio.google.com/apikey | `cp .env.example .env.local` in `dashboard/`, then set `GEMINI_API_KEY` | Restart the dashboard |
+| Router in Pi | [Pi](https://github.com/earendil-works/pi) (checked with 1.5.2) and `python3` on your PATH | `pi install ./pi-package` | It triggers on its own. `/wayfinder status` lists the cards |
+| Router in Claude Code | Claude Code (checked with 2.1.322) | Nothing to install | `claude --plugin-dir ./plugin` |
+| Card tools and unit tests | Python 3.12 and PyYAML | `python3 -m venv .venv && source .venv/bin/activate && pip install pyyaml` | `python3 tools/cards.py check` |
+
+The dashboard opens at http://127.0.0.1:5177. If that port is taken, Vite picks the next free one and prints the address.
+
+To inspect a project other than this repository, start the dashboard with `WAYFINDER_PROJECT=/path/to/project npm run dev`.
+
+No part needs an account, a database or a hosted service. Without a Gemini key the Ask tab shows the findings worked out locally.
+
+If something does not work:
+
+| What you see | Cause and fix |
+| :- | :- |
+| `ModuleNotFoundError: No module named 'yaml'` | PyYAML is missing. Run `pip install pyyaml` |
+| npm warns about an unsupported engine, or the dashboard fails to start | Node is older than 22.13. Check with `node --version` |
+| The Ask tab says "This is the built-in analysis" | No Gemini key is set. This is the expected state without one |
+| "Gemini did not answer: the API key was rejected" | The key in `dashboard/.env.local` is wrong or lacks access to the model. `GEMINI_MODEL` changes the model |
+| `python3 -m unittest discover tests` reports one skipped test | `pi` is not installed. The other tests do not need it |
+| Explore shows no suggestions | skills.sh could not be reached. The scan, the map and the other pages do not need the network |
+
+Verified on Linux on 2026-11-14: both test suites, the type check and the demo. The collectors also define macOS and Windows locations. App logos are read from macOS app bundles only.
+
+Every setting and environment variable is listed in [`docs/api-reference.md`](docs/api-reference.md#8-configuration).
+
+</details>
 
 <details>
 <summary><b>Install and use Wayfinder in Pi</b></summary>
