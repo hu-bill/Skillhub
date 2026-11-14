@@ -1,6 +1,8 @@
 # Photos for the "Nobody is born good at it" band
 
-Drop a file here and it replaces the drawn placeholder for that slot. Nothing else needs changing: the page looks for `people/<slot>.jpg` and falls back to the placeholder when the file is missing.
+All seven slots are filled. The current set was generated with an image model on 2026-11-14 from the prompt starters below, so the people in it are not real.
+
+To replace one, drop a file with the same name here. Nothing else needs changing: the page looks for `people/<slot>.jpg` and falls back to a drawn placeholder when the file is missing.
 
 | File | Shape | Size to export | Who |
 | :- | :- | :- | :- |

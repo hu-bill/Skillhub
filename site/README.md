@@ -35,7 +35,7 @@ This writes plain static files to `dist/`. Asset links are relative, so the fold
 
 ## Things to fill in later
 
-- **Photos.** Each person in the band is a slot. Until `public/people/<slot>.jpg` exists the slot shows a drawn placeholder. File names, sizes and prompt starters are in `public/people/README.md`.
+- **Photos.** Each person in the band is a slot, filled from `public/people/<slot>.jpg`. The current photos are generated images; swap in real ones if you get them. A missing file shows a drawn placeholder. File names, sizes and prompt starters are in `public/people/README.md`.
 - **Install steps.** They describe running from source (`git clone`, `npm install`, `npm run dev`). They assume the dashboard is on the default branch. Replace them when there is a packaged download.
 
 ## Facts on the page
