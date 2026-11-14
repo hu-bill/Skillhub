@@ -1,0 +1,36 @@
+{
+  "name": "wayfinder-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Wayfinder Harness Dashboard: a local, read-only map of the AI apps, skills, MCP servers and token usage on this machine.",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "demo": "vite --mode demo",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "fixture": "UPDATE_FIXTURE=1 vitest run tests/collectors/test_fixture.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@fontsource-variable/outfit": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "smol-toml": "^1.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

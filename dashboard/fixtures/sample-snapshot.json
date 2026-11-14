@@ -1,0 +1,1001 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-14T12:00:00.000Z",
+  "projectRoot": ".",
+  "activeHarness": "pi",
+  "warnings": [
+    "Could not parse ~/Library/Application Support/Code/User/mcp.json: Expected property name or '}' in JSON at position 15 (line 1 column 16)"
+  ],
+  "slices": {
+    "usage": {
+      "sources": [
+        {
+          "app": "claude-code",
+          "status": "ok",
+          "note": "Added up from session transcripts on this machine. Sessions resumed into a new file can be counted twice, so treat totals as an estimate.",
+          "sessions": 1,
+          "totals": {
+            "input": 150,
+            "output": 1350,
+            "cacheRead": 28000,
+            "cacheWrite": 500,
+            "total": 30000
+          },
+          "costUSD": 1.25,
+          "firstDay": "2026-11-10",
+          "lastDay": "2026-11-12"
+        },
+        {
+          "app": "codex",
+          "status": "ok",
+          "note": "Per-thread totals from Codex’s local index. Codex stores one combined number per thread, so there is no input/output split.",
+          "sessions": 2,
+          "totals": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 200000
+          },
+          "firstDay": "2026-11-11",
+          "lastDay": "2026-11-13"
+        },
+        {
+          "app": "cursor",
+          "status": "not-recorded",
+          "note": "Cursor keeps token usage on its servers. See cursor.com/dashboard.",
+          "sessions": 0,
+          "totals": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        },
+        {
+          "app": "chatgpt",
+          "status": "not-recorded",
+          "note": "ChatGPT keeps usage in your OpenAI account. Nothing is written to local files.",
+          "sessions": 0,
+          "totals": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        }
+      ],
+      "daily": [
+        {
+          "day": "2026-11-10",
+          "app": "claude-code",
+          "input": 100,
+          "output": 400,
+          "cacheRead": 9000,
+          "cacheWrite": 500,
+          "total": 10000
+        },
+        {
+          "day": "2026-11-11",
+          "app": "codex",
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 120000
+        },
+        {
+          "day": "2026-11-12",
+          "app": "claude-code",
+          "input": 50,
+          "output": 950,
+          "cacheRead": 19000,
+          "cacheWrite": 0,
+          "total": 20000
+        },
+        {
+          "day": "2026-11-13",
+          "app": "codex",
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 80000
+        }
+      ],
+      "models": [
+        {
+          "app": "codex",
+          "model": "gpt-5.6-sol",
+          "messages": 2,
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "total": 200000
+        },
+        {
+          "app": "claude-code",
+          "model": "claude-opus-5-5",
+          "messages": 2,
+          "input": 150,
+          "output": 1350,
+          "cacheRead": 28000,
+          "cacheWrite": 500,
+          "total": 30000
+        }
+      ],
+      "projects": [
+        {
+          "app": "codex",
+          "project": "shop",
+          "total": 120000,
+          "sessions": 1
+        },
+        {
+          "app": "codex",
+          "project": "blog",
+          "total": 80000,
+          "sessions": 1
+        },
+        {
+          "app": "claude-code",
+          "project": "shop",
+          "total": 30000,
+          "sessions": 1
+        }
+      ],
+      "limits": [
+        {
+          "app": "codex",
+          "label": "5-hour window",
+          "usedPercent": 42,
+          "windowMinutes": 300,
+          "resetsAt": "2026-11-14T15:00:00.000Z",
+          "observedAt": "2026-11-14T11:00:00Z",
+          "stale": false,
+          "source": "Last rate-limit reading Codex saved in a session log"
+        },
+        {
+          "app": "codex",
+          "label": "7-day window",
+          "usedPercent": 17,
+          "windowMinutes": 10080,
+          "resetsAt": "2026-11-20T00:00:00.000Z",
+          "observedAt": "2026-11-14T11:00:00Z",
+          "stale": false,
+          "source": "Last rate-limit reading Codex saved in a session log"
+        },
+        {
+          "app": "claude-desktop",
+          "label": "5-hour window",
+          "usedPercent": 80,
+          "windowMinutes": 300,
+          "observedAt": "2026-11-01T00:00:00.000Z",
+          "stale": true,
+          "source": "Last plan-usage sample saved by the Claude desktop app (field meaning inferred)"
+        },
+        {
+          "app": "claude-desktop",
+          "label": "7-day window",
+          "usedPercent": 31,
+          "windowMinutes": 10080,
+          "observedAt": "2026-11-14T10:00:00.000Z",
+          "stale": false,
+          "source": "Last plan-usage sample saved by the Claude desktop app (field meaning inferred)"
+        }
+      ],
+      "counters": [
+        {
+          "app": "claude-code",
+          "kind": "plugin",
+          "name": "deploy-kit",
+          "count": 40,
+          "lastUsedAt": "2026-11-13T09:00:00.000Z"
+        },
+        {
+          "app": "claude-code",
+          "kind": "skill",
+          "name": "pdf-tools",
+          "count": 12,
+          "lastUsedAt": "2026-11-12T09:00:00.000Z"
+        },
+        {
+          "app": "claude-code",
+          "kind": "skill",
+          "name": "deploy:ship",
+          "count": 3,
+          "lastUsedAt": "2026-11-01T09:00:00.000Z"
+        }
+      ]
+    },
+    "apps": {
+      "items": [
+        {
+          "id": "claude-code",
+          "name": "Claude Code",
+          "vendor": "Anthropic",
+          "kind": "cli",
+          "detected": true,
+          "evidence": [
+            "~/.claude",
+            "~/.claude.json"
+          ],
+          "readable": "partial",
+          "note": "Connectors added on claude.ai are tied to your account and are not in local files.",
+          "userSkillDir": "~/.claude/skills",
+          "projectSkillDir": "./.claude/skills",
+          "mcpAdd": {
+            "kind": "cli",
+            "tool": "claude"
+          },
+          "counts": {
+            "skills": 5,
+            "mcp": 5,
+            "packages": 1
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "claude-desktop",
+          "name": "Claude desktop",
+          "vendor": "Anthropic",
+          "kind": "desktop",
+          "detected": true,
+          "evidence": [
+            "~/Library/Application Support/Claude"
+          ],
+          "readable": "partial",
+          "note": "Only local MCP servers are in a file. Skills and connectors you enable in the app live in your account.",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/Library/Application Support/Claude/claude_desktop_config.json",
+            "key": "mcpServers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 1,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "codex",
+          "name": "Codex",
+          "vendor": "OpenAI",
+          "kind": "cli",
+          "detected": true,
+          "evidence": [
+            "~/.codex"
+          ],
+          "readable": "full",
+          "userSkillDir": "~/.agents/skills",
+          "projectSkillDir": "./.agents/skills",
+          "mcpAdd": {
+            "kind": "cli",
+            "tool": "codex"
+          },
+          "counts": {
+            "skills": 4,
+            "mcp": 1,
+            "packages": 2
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "chatgpt",
+          "name": "ChatGPT",
+          "vendor": "OpenAI",
+          "kind": "desktop",
+          "detected": true,
+          "evidence": [
+            "~/Library/Application Support/com.openai.chat"
+          ],
+          "readable": "none",
+          "note": "ChatGPT keeps connectors, custom GPTs and usage in your OpenAI account. Nothing about them is stored in local files, so this map can only show that the app is installed.",
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "cursor",
+          "name": "Cursor",
+          "vendor": "Anysphere",
+          "kind": "ide",
+          "detected": true,
+          "evidence": [
+            "~/.cursor",
+            "/Applications/Cursor.app"
+          ],
+          "readable": "partial",
+          "note": "Token usage is kept on Cursor’s servers, not on disk.",
+          "userSkillDir": "~/.cursor/skills",
+          "projectSkillDir": "./.cursor/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.cursor/mcp.json",
+            "key": "mcpServers"
+          },
+          "counts": {
+            "skills": 8,
+            "mcp": 1,
+            "packages": 0
+          },
+          "hasIcon": true
+        },
+        {
+          "id": "vscode",
+          "name": "VS Code (Copilot)",
+          "vendor": "Microsoft",
+          "kind": "ide",
+          "detected": true,
+          "evidence": [
+            "~/Library/Application Support/Code"
+          ],
+          "readable": "partial",
+          "projectSkillDir": "./.github/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/Library/Application Support/Code/User/mcp.json",
+            "key": "servers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "antigravity",
+          "name": "Antigravity",
+          "vendor": "Google",
+          "kind": "ide",
+          "detected": false,
+          "evidence": [],
+          "readable": "partial",
+          "userSkillDir": "~/.gemini/config/skills",
+          "projectSkillDir": "./.agent/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.gemini/config/mcp_config.json",
+            "key": "mcpServers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "gemini-cli",
+          "name": "Gemini CLI",
+          "vendor": "Google",
+          "kind": "cli",
+          "detected": false,
+          "evidence": [],
+          "readable": "full",
+          "userSkillDir": "~/.gemini/skills",
+          "projectSkillDir": "./.gemini/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.gemini/settings.json",
+            "key": "mcpServers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "pi",
+          "name": "Pi",
+          "vendor": "Earendil Works",
+          "kind": "cli",
+          "detected": false,
+          "evidence": [],
+          "readable": "full",
+          "userSkillDir": "~/.pi/agent/skills",
+          "projectSkillDir": "./.pi/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.pi/agent/mcp.json",
+            "key": "mcpServers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "opencode",
+          "name": "opencode",
+          "vendor": "SST",
+          "kind": "cli",
+          "detected": false,
+          "evidence": [],
+          "readable": "full",
+          "userSkillDir": "~/.config/opencode/skills",
+          "projectSkillDir": "./.opencode/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.config/opencode/opencode.json",
+            "key": "mcp"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "windsurf",
+          "name": "Windsurf",
+          "vendor": "Cognition",
+          "kind": "ide",
+          "detected": false,
+          "evidence": [],
+          "readable": "partial",
+          "userSkillDir": "~/.codeium/windsurf/skills",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.codeium/windsurf/mcp_config.json",
+            "key": "mcpServers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        },
+        {
+          "id": "zed",
+          "name": "Zed",
+          "vendor": "Zed Industries",
+          "kind": "ide",
+          "detected": false,
+          "evidence": [],
+          "readable": "partial",
+          "mcpAdd": {
+            "kind": "json",
+            "file": "~/.config/zed/settings.json",
+            "key": "context_servers"
+          },
+          "counts": {
+            "skills": 0,
+            "mcp": 0,
+            "packages": 0
+          },
+          "hasIcon": false
+        }
+      ]
+    },
+    "mcp": {
+      "servers": [
+        {
+          "id": "claude-code:user:github:~/.claude.json",
+          "key": "url:api.githubcopilot.com/mcp",
+          "name": "github",
+          "app": "claude-code",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "transport": "http",
+          "url": "https://api.githubcopilot.com/mcp/",
+          "envNames": [],
+          "headerNames": [
+            "Authorization"
+          ],
+          "enabled": true,
+          "source": "~/.claude.json"
+        },
+        {
+          "id": "claude-code:user:postgres:~/.claude.json",
+          "key": "cmd:npx @modelcontextprotocol/server-postgres",
+          "name": "postgres",
+          "app": "claude-code",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "transport": "stdio",
+          "command": "npx -y @modelcontextprotocol/server-postgres postgresql://db.example.com/app",
+          "envNames": [],
+          "headerNames": [],
+          "enabled": true,
+          "source": "~/.claude.json"
+        },
+        {
+          "id": "claude-code:local:scratch:~/.claude.json",
+          "key": "cmd:uvx scratch-mcp",
+          "name": "scratch",
+          "app": "claude-code",
+          "scope": "local",
+          "origin": {
+            "kind": "project"
+          },
+          "transport": "stdio",
+          "command": "uvx scratch-mcp",
+          "envNames": [],
+          "headerNames": [],
+          "enabled": true,
+          "source": "~/.claude.json"
+        },
+        {
+          "id": "claude-code:project:linear:./.mcp.json",
+          "key": "url:mcp.linear.app/mcp",
+          "name": "linear",
+          "app": "claude-code",
+          "scope": "project",
+          "origin": {
+            "kind": "project"
+          },
+          "transport": "http",
+          "url": "https://mcp.linear.app/mcp",
+          "envNames": [],
+          "headerNames": [],
+          "enabled": true,
+          "source": "./.mcp.json"
+        },
+        {
+          "id": "claude-code:user:deploy:~/.claude/plugins/cache/acme/deploy-kit/1.2.0/.mcp.json",
+          "key": "url:mcp.deploy.example.com",
+          "name": "deploy",
+          "app": "claude-code",
+          "scope": "user",
+          "origin": {
+            "kind": "plugin",
+            "name": "deploy"
+          },
+          "transport": "http",
+          "url": "https://mcp.deploy.example.com/",
+          "envNames": [],
+          "headerNames": [],
+          "enabled": true,
+          "source": "~/.claude/plugins/cache/acme/deploy-kit/1.2.0/.mcp.json"
+        },
+        {
+          "id": "claude-desktop:user:filesystem:~/Library/Application Support/Claude/claude_desktop_config.json",
+          "key": "cmd:npx @modelcontextprotocol/server-filesystem",
+          "name": "filesystem",
+          "app": "claude-desktop",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "transport": "stdio",
+          "command": "npx -y @modelcontextprotocol/server-filesystem --token ‹redacted›",
+          "envNames": [
+            "API_TOKEN"
+          ],
+          "headerNames": [],
+          "enabled": true,
+          "source": "~/Library/Application Support/Claude/claude_desktop_config.json"
+        },
+        {
+          "id": "codex:user:github:~/.codex/config.toml",
+          "key": "url:api.githubcopilot.com/mcp",
+          "name": "github",
+          "app": "codex",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "transport": "http",
+          "url": "https://api.githubcopilot.com/mcp/",
+          "envNames": [
+            "GITHUB_TOKEN"
+          ],
+          "headerNames": [],
+          "enabled": true,
+          "source": "~/.codex/config.toml"
+        },
+        {
+          "id": "cursor:user:github:~/.cursor/mcp.json",
+          "key": "url:api.githubcopilot.com/mcp",
+          "name": "github",
+          "app": "cursor",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "transport": "http",
+          "url": "https://api.githubcopilot.com/mcp/?…",
+          "envNames": [],
+          "headerNames": [],
+          "enabled": true,
+          "source": "~/.cursor/mcp.json"
+        }
+      ]
+    },
+    "packages": {
+      "items": [
+        {
+          "id": "claude-code:deploy-kit@acme",
+          "name": "deploy",
+          "app": "claude-code",
+          "scope": "user",
+          "type": "plugin",
+          "marketplace": "acme",
+          "version": "1.2.0",
+          "enabled": true,
+          "skillCount": 1,
+          "mcpCount": 1,
+          "usageCount": 40,
+          "lastUsedAt": "2026-11-13T09:00:00.000Z"
+        },
+        {
+          "id": "codex:docs@openai-curated",
+          "name": "docs",
+          "app": "codex",
+          "scope": "user",
+          "type": "plugin",
+          "marketplace": "openai-curated",
+          "version": "abc123",
+          "enabled": true,
+          "skillCount": 1,
+          "mcpCount": 0
+        },
+        {
+          "id": "codex:legacy@openai-curated",
+          "name": "legacy",
+          "app": "codex",
+          "scope": "user",
+          "type": "plugin",
+          "marketplace": "openai-curated",
+          "enabled": false,
+          "skillCount": 0,
+          "mcpCount": 0
+        }
+      ]
+    },
+    "skills": {
+      "items": [
+        {
+          "id": "claude-code:~/.claude/skills/commit-helper",
+          "key": "1ir36jd",
+          "name": "commit-helper",
+          "description": "Write a commit message from the staged diff.",
+          "app": "claude-code",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "path": "~/.claude/skills/commit-helper",
+          "tags": [
+            "workflow",
+            "docs"
+          ],
+          "modelInvocable": false,
+          "descriptionChars": 44,
+          "estTokens": 15
+        },
+        {
+          "id": "claude-code:~/.claude/skills/pdf-tools",
+          "key": "1reba9h",
+          "name": "pdf-tools",
+          "description": "Read, merge and fill PDF files. Use when the task mentions a PDF.",
+          "app": "claude-code",
+          "scope": "user",
+          "origin": {
+            "kind": "user"
+          },
+          "path": "~/.claude/skills/pdf-tools",
+          "tags": [
+            "docs"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 65,
+          "estTokens": 19,
+          "usageCount": 12,
+          "lastUsedAt": "2026-11-12T09:00:00.000Z"
+        },
+        {
+          "id": "claude-code:./.claude/skills/new-card",
+          "key": "g704hv",
+          "name": "new-card",
+          "description": "Draft a decision card for this repository.",
+          "app": "claude-code",
+          "scope": "project",
+          "origin": {
+            "kind": "project"
+          },
+          "path": "./.claude/skills/new-card",
+          "tags": [],
+          "modelInvocable": true,
+          "descriptionChars": 42,
+          "estTokens": 13,
+          "project": "project"
+        },
+        {
+          "id": "claude-code:~/work/blog/.claude/skills/post-checker",
+          "key": "1b15a5n",
+          "name": "post-checker",
+          "description": "Check a blog post for broken links before publishing.",
+          "app": "claude-code",
+          "scope": "project",
+          "origin": {
+            "kind": "project"
+          },
+          "path": "~/work/blog/.claude/skills/post-checker",
+          "tags": [],
+          "modelInvocable": true,
+          "descriptionChars": 53,
+          "estTokens": 17,
+          "project": "blog"
+        },
+        {
+          "id": "claude-code:~/.claude/plugins/cache/acme/deploy-kit/1.2.0/skills/ship",
+          "key": "171cm0c",
+          "name": "deploy:ship",
+          "description": "Deploy the current project and report the URL.",
+          "app": "claude-code",
+          "scope": "user",
+          "origin": {
+            "kind": "plugin",
+            "name": "deploy"
+          },
+          "path": "~/.claude/plugins/cache/acme/deploy-kit/1.2.0/skills/ship",
+          "tags": [
+            "docs",
+            "deploy"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 46,
+          "estTokens": 15,
+          "usageCount": 3,
+          "lastUsedAt": "2026-11-01T09:00:00.000Z"
+        },
+        {
+          "id": "codex:~/.codex/skills/.system/skill-creator",
+          "key": "ft9p46",
+          "name": "skill-creator",
+          "description": "Create a new skill from a description.",
+          "app": "codex",
+          "scope": "builtin",
+          "origin": {
+            "kind": "builtin"
+          },
+          "path": "~/.codex/skills/.system/skill-creator",
+          "tags": [
+            "agents"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 38,
+          "estTokens": 13
+        },
+        {
+          "id": "codex:~/.agents/skills/pdf-tools",
+          "key": "1reba9h",
+          "name": "pdf-tools",
+          "description": "Read, merge and fill PDF files. Use when the task mentions a PDF.",
+          "app": "codex",
+          "scope": "user",
+          "origin": {
+            "kind": "shared",
+            "label": "~/.agents/skills"
+          },
+          "path": "~/.agents/skills/pdf-tools",
+          "tags": [
+            "docs"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 65,
+          "estTokens": 19
+        },
+        {
+          "id": "codex:~/.agents/skills/sql-review",
+          "key": "8tvm3o",
+          "name": "sql-review",
+          "description": "Review a SQL migration for locks and data loss.",
+          "app": "codex",
+          "scope": "user",
+          "origin": {
+            "kind": "shared",
+            "label": "~/.agents/skills"
+          },
+          "path": "~/.agents/skills/sql-review",
+          "tags": [
+            "data",
+            "testing"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 47,
+          "estTokens": 15
+        },
+        {
+          "id": "codex:~/.codex/plugins/cache/openai-curated/docs/abc123/skills/write-docs",
+          "key": "1adrqwi",
+          "name": "docs:write-docs",
+          "description": "Draft documentation pages in the house style.",
+          "app": "codex",
+          "scope": "user",
+          "origin": {
+            "kind": "plugin",
+            "name": "docs"
+          },
+          "path": "~/.codex/plugins/cache/openai-curated/docs/abc123/skills/write-docs",
+          "tags": [
+            "docs"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 45,
+          "estTokens": 15
+        },
+        {
+          "id": "cursor:~/.cursor/skills-cursor/create-rule",
+          "key": "1aqw0w7",
+          "name": "create-rule",
+          "description": "Create a Cursor rule file.",
+          "app": "cursor",
+          "scope": "builtin",
+          "origin": {
+            "kind": "builtin"
+          },
+          "path": "~/.cursor/skills-cursor/create-rule",
+          "tags": [],
+          "modelInvocable": true,
+          "descriptionChars": 26,
+          "estTokens": 10
+        },
+        {
+          "id": "cursor:~/.agents/skills/pdf-tools",
+          "key": "1reba9h",
+          "name": "pdf-tools",
+          "description": "Read, merge and fill PDF files. Use when the task mentions a PDF.",
+          "app": "cursor",
+          "scope": "user",
+          "origin": {
+            "kind": "shared",
+            "label": "~/.agents/skills"
+          },
+          "path": "~/.agents/skills/pdf-tools",
+          "tags": [
+            "docs"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 65,
+          "estTokens": 19
+        },
+        {
+          "id": "cursor:~/.agents/skills/sql-review",
+          "key": "8tvm3o",
+          "name": "sql-review",
+          "description": "Review a SQL migration for locks and data loss.",
+          "app": "cursor",
+          "scope": "user",
+          "origin": {
+            "kind": "shared",
+            "label": "~/.agents/skills"
+          },
+          "path": "~/.agents/skills/sql-review",
+          "tags": [
+            "data",
+            "testing"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 47,
+          "estTokens": 15
+        },
+        {
+          "id": "cursor:~/.claude/skills/commit-helper",
+          "key": "1ir36jd",
+          "name": "commit-helper",
+          "description": "Write a commit message from the staged diff.",
+          "app": "cursor",
+          "scope": "user",
+          "origin": {
+            "kind": "shared",
+            "label": "~/.claude/skills"
+          },
+          "path": "~/.claude/skills/commit-helper",
+          "tags": [
+            "workflow",
+            "docs"
+          ],
+          "modelInvocable": false,
+          "descriptionChars": 44,
+          "estTokens": 15
+        },
+        {
+          "id": "cursor:~/.claude/skills/pdf-tools",
+          "key": "1reba9h",
+          "name": "pdf-tools",
+          "description": "Read, merge and fill PDF files. Use when the task mentions a PDF.",
+          "app": "cursor",
+          "scope": "user",
+          "origin": {
+            "kind": "shared",
+            "label": "~/.claude/skills"
+          },
+          "path": "~/.claude/skills/pdf-tools",
+          "tags": [
+            "docs"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 65,
+          "estTokens": 19
+        },
+        {
+          "id": "cursor:~/.codex/skills/.system/skill-creator",
+          "key": "ft9p46",
+          "name": "skill-creator",
+          "description": "Create a new skill from a description.",
+          "app": "cursor",
+          "scope": "builtin",
+          "origin": {
+            "kind": "builtin"
+          },
+          "path": "~/.codex/skills/.system/skill-creator",
+          "tags": [
+            "agents"
+          ],
+          "modelInvocable": true,
+          "descriptionChars": 38,
+          "estTokens": 13
+        },
+        {
+          "id": "cursor:./.claude/skills/new-card",
+          "key": "g704hv",
+          "name": "new-card",
+          "description": "Draft a decision card for this repository.",
+          "app": "cursor",
+          "scope": "project",
+          "origin": {
+            "kind": "project"
+          },
+          "path": "./.claude/skills/new-card",
+          "tags": [],
+          "modelInvocable": true,
+          "descriptionChars": 42,
+          "estTokens": 13,
+          "project": "project"
+        },
+        {
+          "id": "cursor:~/work/blog/.claude/skills/post-checker",
+          "key": "1b15a5n",
+          "name": "post-checker",
+          "description": "Check a blog post for broken links before publishing.",
+          "app": "cursor",
+          "scope": "project",
+          "origin": {
+            "kind": "project"
+          },
+          "path": "~/work/blog/.claude/skills/post-checker",
+          "tags": [],
+          "modelInvocable": true,
+          "descriptionChars": 53,
+          "estTokens": 17,
+          "project": "blog"
+        }
+      ],
+      "projects": [
+        {
+          "id": ".",
+          "name": "project",
+          "current": true,
+          "skills": 1
+        },
+        {
+          "id": "~/work/blog",
+          "name": "blog",
+          "current": false,
+          "skills": 1
+        }
+      ]
+    }
+  }
+}

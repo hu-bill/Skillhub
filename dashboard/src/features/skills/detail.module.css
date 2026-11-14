@@ -1,0 +1,121 @@
+.detail {
+  display: grid;
+  gap: 20px;
+}
+
+.description {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--border);
+  overflow: hidden;
+}
+
+.facts > div {
+  padding: 10px 12px;
+  background: var(--surface);
+}
+
+.facts dt {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.facts dd {
+  margin: 2px 0 0;
+  font-weight: 500;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.sectionHead h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.row:first-child {
+  border-top: 0;
+}
+
+.rowText {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.rowText span {
+  color: var(--text-3);
+  font-size: 12.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row :global(.btn) {
+  min-height: 30px;
+  padding: 3px 12px;
+  font-size: 13px;
+}
+
+.marks {
+  display: inline-flex;
+}
+
+.marks > * {
+  margin-left: -5px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.marks > *:first-child {
+  margin-left: 0;
+}
+
+.add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.add :global(.select) {
+  flex: 1;
+  min-width: 140px;
+}
+
+.note {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 13px;
+}
