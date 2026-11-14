@@ -2,10 +2,10 @@
 
 A [Pi](https://github.com/earendil-works/pi) package and multi-scope harness dashboard:
 
-1. **In-session routing (`pi-package/`):** When you start a new kind of work, checks a small set of dated decision cards and tells you whether an existing Pi feature, package, skill, MCP server or working method fits better than the default. Most of the time the answer is one line saying nothing needs adding.
-2. **Harness Dashboard (`dashboard/`):** Gives a clean, read-only overview of all skills, MCP servers, packages/extensions, permissions/configs, always-on context cost, and Wayfinder cards/ledger across user, project, and local scopes.
+1. **Dual-harness in-session routing (`pi-package/` & `plugin/`):** When you start a new kind of work, checks a small set of dated decision cards and tells you whether an existing feature, package/plugin, skill, MCP server or working method fits better than the default. Most of the time the answer is one line saying nothing needs adding.
+2. **Harness Dashboard (`dashboard/`):** Gives a clean, read-only overview of all skills, MCP servers, packages/plugins, permissions/configs, always-on context cost, and Wayfinder cards/ledger across user, project, and local scopes.
 
-`wayfinder` is a working name. The design is in `docs/`: start with `docs/spec.md` (section 16 for the Pi v0.1 target) and `docs/dashboard-spec.md` (for the dashboard lane). The earlier Claude Code plugin implementation is preserved in `plugin/`.
+`wayfinder` is a working name. The design is in `docs/`: start with `docs/spec.md` (section 16 for Pi, sections 1–15 for Claude Code) and `docs/dashboard-spec.md` (for the dashboard lane).
 
 ## Install (Pi)
 
@@ -106,9 +106,9 @@ The repository is structured into vertical lanes (`dashboard/`, `pi-package/`, `
 - **Parallel dashboard work:** Merge shared `[spine]` scaffolding first (`dashboard/package.json`, `shared/schema.*`, `src/shell/`), then assign one slice per branch (`overview`, `skills`, `mcp`, `packages`, `configs`, `cards-ledger`). Each slice owns `dashboard/src/features/<slice>/` and `dashboard/collectors/<slice>.*` via auto-discovery—never edit `App.tsx`, global CSS, or `dashboard/package.json` on a feature branch.
 - **Scope your coding agent up front:** Tell your agent its exact slice boundary at the start of the session so it does not touch shared docs or another slice.
 
-## Preserved Claude Code plugin (`./plugin`)
+## Claude Code plugin (`./plugin`)
 
-The earlier Claude Code v0.1 slice remains intact under `plugin/`, `.claude-plugin/marketplace.json`, and `.claude/`:
+Wayfinder ships dual-harness support—the Claude Code plugin implementation lives under `plugin/`, `.claude-plugin/marketplace.json`, and `.claude/`:
 
 ```bash
 claude --plugin-dir ./plugin

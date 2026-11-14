@@ -73,7 +73,7 @@ Checked on this date against the docs and Claude Code 2.1.322.
 
 | Need | Native feature | Source |
 | :- | :- | :- |
-| A local, structured catalog of installable plugins | `claude plugin list --available --json` returns every plugin in the configured marketplaces, with no network call. On this machine: 4,047 entries (317 from `claude-plugins-official`, 3,730 from `anthropic-plugin-directory`), each with `pluginId`, `name`, `description`, `marketplaceName`, `installCount` and `source`. | Command output; https://code.claude.com/docs/en/plugins/cli-reference.md |
+| A local, structured catalog of installable plugins | `claude plugin list --available --json` returns every plugin in the configured marketplaces, with no network call. On 2026-11-13: 4,047 entries (317 from `claude-plugins-official`, 3,730 from `anthropic-plugin-directory`), each with `pluginId`, `name`, `description`, `marketplaceName`, `installCount` and `source`. | Command output; https://code.claude.com/docs/en/plugins/cli-reference.md |
 | What is installed, with scope and state | `claude plugin list --json` lists installed plugins with `scope`, `enabled` and `installPath` | Command output |
 | In-session plugin and skill suggestions | In the desktop app's Code tab, Claude has tools that search the claude.ai plugin catalog and render an install card: `SearchPlugins`, `SuggestPluginInstall`, `ListPlugins`, `SearchSkills`, `SuggestSkills`. Results carry the publisher tier, a `reach` value (contained, remote or privileged) and the component list. They are keyword matches with no verdict. | Observed in a session on 2026-11-13. No docs page found yet. |
 | Stop Claude from invoking one skill | A `Skill(name)` deny rule in permission settings. The docs do not say whether a typed `/name` still runs under it. | https://code.claude.com/docs/en/skills.md (Restrict Claude's skill access) |
@@ -102,7 +102,7 @@ No plugin named `wayfinder` exists in that catalog.
 
 ## 6. Added on 2026-11-14: Pi harness (`@earendil-works/pi-coding-agent` 1.5.2)
 
-Checked against the installed Pi 1.5.2 documentation and runtime on this machine.
+Checked against the Pi 1.5.2 documentation and runtime.
 
 | Need | Native Pi feature | Source |
 | :- | :- | :- |

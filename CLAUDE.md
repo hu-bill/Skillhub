@@ -3,7 +3,7 @@
 Working name: Wayfinder (not final).
 
 A developer tool built around two complementary surfaces:
-1. **In-session task routing (`pi-package/`, preserved Claude Code slice in `plugin/`):** Points the developer to the right existing built-in features, packages/plugins, skills, MCP servers and working methods for whatever they are about to do, with a dated verdict.
+1. **Dual-harness in-session task routing (`pi-package/` for Pi and `plugin/` for Claude Code):** Points the developer to the right existing built-in features, packages/plugins, skills, MCP servers and working methods for whatever they are about to do, with a dated verdict.
 2. **Harness Dashboard (`dashboard/`):** Gives a clean, read-only overview of all skills, MCP servers, packages/extensions, permissions/configs, always-on token cost, and Wayfinder cards/ledger across user, project, and local scopes.
 
 ## Status

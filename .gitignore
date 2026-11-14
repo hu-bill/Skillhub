@@ -40,10 +40,17 @@ Thumbs.db
 *.swo
 *:Zone.Identifier
 
-# Personal, per-machine harness & proxy settings
+# Local workspace setup (not part of Wayfinder or dashboard)
+/package.json
+/package-lock.json
+/skills-lock.json
+/.agents/skills/gemini-*
+/.claude/skills/gemini-*
 litellm.yaml
 litellm*.yaml
 litellm*.yml
+
+# Personal, per-machine harness & editor settings
 .claude/settings.local.json
 .claude/worktrees/
 .pi/settings.json

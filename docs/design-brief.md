@@ -208,7 +208,7 @@ agentic-development-tool-recommender/
 | 2026-11-10 | Auto-trigger plus weekly digest, with a way to turn it off per project for a vanilla setup | Mechanism in 4.4 |
 | 2026-11-13 | Spec, sign-off, then a thin slice | v0.1 is Route, about 12 cards, the ledger, live lookup and evals. The weekly loop and Prune are specified after one to two weeks of use |
 | 2026-11-13 | First cards cover domain capability tools, context and cost, and quality gates | Scale and autonomy waits |
-| 2026-11-13 | Private GitHub repository | Commits carry no Claude co-author trailer |
+| 2026-11-13 | GitHub repository | Commits carry no co-author trailer (moved to public team repo on 2026-11-14) |
 | 2026-11-13 | Quiet auto-trigger | One line, then the task continues. It stops only when the developer has to install something or change working method |
 | 2026-11-14 | **Pi harness as v1 target** | Build v1 for Pi (`pi-package/`) instead of Claude Code first; keep the Claude Code v0.1 slice intact in `plugin/` |
 | 2026-11-14 | **Multi-scope Harness Dashboard** | Add an inspect-first visual dashboard (`dashboard/`, `docs/dashboard-spec.md`) showing installed skills, MCPs, packages/plugins, configs, context cost and card/ledger status across user, project and local scopes |

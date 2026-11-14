@@ -232,8 +232,8 @@ Re-check when stale: latest release date, number of maintainers, whether an offi
 
 For your review:
 
-- `ring: adopt` reflects that you already use REA. Change it if you see it as `trial`.
-- On this machine REA is registered at user scope and pinned to `rea-agents@6.7.0`, while the `rea` CLI on your PATH is 6.8.0 and the latest release is 6.9.0. Node here is 24.21.0, one patch below what 6.9.0 asks for.
+- Confirm whether `ring: adopt` or `ring: trial` fits best.
+- Registering REA at project scope rather than user scope avoids loading its 207 tool names in unrelated projects; check that the local Node version satisfies the latest `rea-agents` engine range.
 - The 2,000-token figure is an estimate from the tool count. `/context` in a session gives the real number.
 
 #### `long-sessions-degrade.md`
@@ -314,8 +314,8 @@ Re-check when stale: the window size and compaction wording in best-practices, t
 
 For your review:
 
-- You have Headroom installed (0.37.0, released 2026-08-27; the latest is 0.44.0) with your own `/headroom` toggle. On 2026-11-13 its status was: routing off, MCP server not registered, proxy healthy. The card treats it as the alternative, not the default. You have first-hand experience with it, so this is the opinion most worth checking.
-- If your own measurements show Headroom earning its place, the honest card is `verdict: pick` with the built-in steps as the alternative.
+- The card treats Headroom as the alternative rather than the default, since built-in `/clear`, `/compact`, and subagents cover standard sessions without routing every request through a local proxy.
+- If measurements show Headroom earning its place as a default, flip the card to `verdict: pick` with the built-in steps as the alternative.
 
 #### `plan-large-feature.md`
 
@@ -393,7 +393,7 @@ Re-check when stale: the plan mode section of permission-modes, both plugins' ve
 
 For your review:
 
-- You have superpowers installed at project scope for `learn-chinese-game`, currently disabled. The skip entry is about planning only. If you value its planning skills over plan mode, the card should say so.
+- The skip entry applies to installing `superpowers` for planning alone. If you want its full multi-skill workflow (TDD, debugging, review, worktrees) rather than just planning, adjust the card accordingly.
 
 ## 4. First cards
 
@@ -510,7 +510,7 @@ If neither the catalog command nor the scout is available, say that no card cove
 
 Steps 1 to 4 and 6 use only the Read tool. The shell appears only in the optional ledger and catalog steps. Three reasons:
 
-- Eval runs remove `Bash` unless it is granted, and a grant needs a sandbox backend (`socat` is missing on this machine). With a shell-free read path the default suite needs no grant.
+- Eval runs remove `Bash` unless it is granted, and a grant needs a Linux sandbox backend (`bubblewrap` and `socat`). With a shell-free read path the default suite needs no grant.
 - A shell command injected into a skill aborts the whole invocation when it cannot run.
 - The folder stays usable as a plain Agent Skill in another harness.
 
@@ -607,7 +607,7 @@ Rules:
 Ledger lines:
 
 ```json
-{"ts": "2026-11-13T19:02:11Z", "event": "recommended", "card": "reverse-engineering", "project": "/home/billh/projects/some-app"}
+{"ts": "2026-11-13T19:02:11Z", "event": "recommended", "card": "reverse-engineering", "project": "/path/to/some-app"}
 ```
 
 | Event | When | Extra fields |
@@ -837,7 +837,7 @@ Checked on 2026-11-13. `prior-art.md` section 5 has more detail.
 | A relative-path plugin in a marketplace added from a local path loads in place | https://code.claude.com/docs/en/plugins/loading |
 | A `CLAUDE.md` at a plugin root is not loaded and draws a validation warning | https://code.claude.com/docs/en/plugins/manifest-reference |
 | `claude plugin details` needs the plugin loaded, for example with `--plugin-dir` in the same command | https://code.claude.com/docs/en/plugins/measure |
-| `claude plugin list --available --json` returned 4,047 entries on this machine | Command output |
+| `claude plugin list --available --json` returned 4,047 entries across the default marketplaces | Command output |
 | Cloud sessions load the repository's `.claude/skills/`, not plugins declared in its settings | https://code.claude.com/docs/en/cloud-environments |
 | `attribution.commit` set to an empty string removes the commit trailer | https://code.claude.com/docs/en/settings-reference |
 
