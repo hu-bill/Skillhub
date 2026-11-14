@@ -9,6 +9,7 @@
   <img alt="Node 22.13 or newer" src="https://img.shields.io/badge/node-%E2%89%A5%2022.13-3c873a">
   <img alt="Python 3.12" src="https://img.shields.io/badge/python-3.12-3776ab">
   <img alt="Server listens on localhost only" src="https://img.shields.io/badge/server-localhost%20only-0f9d7a">
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-555555"></a>
 </p>
 
 <p align="center">
@@ -356,3 +357,7 @@ The repository is split into vertical lanes (`dashboard/`, `pi-package/`, `plugi
 - **Scope your coding agent up front.** Tell the agent its exact slice boundary at the start of the session so it does not touch shared docs or another slice.
 
 </details>
+
+## License
+
+[MIT](LICENSE). The third-party packages the dashboard depends on, and their licenses, are listed in [`docs/tech-stack.md`](docs/tech-stack.md#31-dashboard-dashboardpackagejson).
